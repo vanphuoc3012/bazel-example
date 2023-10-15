@@ -1,0 +1,31 @@
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+load("@io_bazel_rules_docker//python3:image.bzl", py_image="py3_image")
+load("@pypi//:requirements.bzl", "requirement")
+
+
+py_binary(
+    name = "python_web",
+    srcs = ["python_web.py"],
+    deps = [
+        ":python_web_lib",
+    ],
+    main = "python_web.py"
+)
+
+py_library(
+    name = "python_web_lib",
+    deps = [
+        "@pypi_flask//:pkg",
+        "//projects/calculator:calculator",
+    ],
+    srcs = ["python_web.py"],
+)
+
+py_image(
+    name = "python_web_image",
+    srcs = ["python_web.py"],
+    deps = [
+        ":python_web_lib",
+    ],
+    main = "python_web.py"
+)
